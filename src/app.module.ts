@@ -3,10 +3,16 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ArtistModule } from './artist/artist.module';
 import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [InMemoryDBModule.forRoot(), ConfigModule.forRoot(), UserModule],
+  imports: [
+    InMemoryDBModule.forRoot(),
+    ConfigModule.forRoot(),
+    UserModule,
+    ArtistModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
