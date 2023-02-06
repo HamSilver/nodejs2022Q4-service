@@ -19,6 +19,8 @@ npm install
 
 ## Running application
 
+Rename `.env.example` file in root directory of the project to `.env`
+
 ```
 npm start
 ```
