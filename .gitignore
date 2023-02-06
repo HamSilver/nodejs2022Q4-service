@@ -4,6 +4,7 @@
 
 # my things
 /.misc
+.env
 
 # Logs
 logs
