@@ -58,7 +58,9 @@ export class AlbumService implements OnModuleInit {
   delete(id: string): void {
     if (this.memoryAlbumService.get(id)) {
       const foundTracks = this.trackService.getByAlbum(id);
-      foundTracks.forEach((trackId) => this.trackService.delete(trackId.id));
+      foundTracks.forEach((trackId) =>
+        this.trackService.update(trackId.id, { albumId: null }),
+      );
       this.memoryAlbumService.delete(id);
     } else {
       throw new NotFoundException('Album not found');

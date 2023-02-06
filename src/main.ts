@@ -12,7 +12,7 @@ async function bootstrap() {
   const document = parse(
     (await readFile(join(process.cwd(), 'doc', 'api.yaml'))).toString('utf-8'),
   );
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('doc', app, document);
   const httpAdapter = app.getHttpAdapter().getInstance();
   httpAdapter.set('strict routing', true);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));

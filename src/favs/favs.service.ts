@@ -65,9 +65,7 @@ export class FavsService implements OnModuleInit {
     if (!storage.tracks.includes(id)) {
       throw new NotFoundException('Track not found');
     }
-    console.log('storage.tracks:', storage.tracks);
     storage.tracks = storage.tracks.filter((item) => item !== id);
-    console.log('storage.tracks 2:', storage.tracks);
     this.memoryFavsService.update(storage);
     return;
   }

@@ -12,23 +12,41 @@ import { CreateUserDto, UpdatePasswordDto } from './user.dto';
 export class UserService {
   constructor(private memoryUserService: InMemoryDBService<UserEntity>) {}
 
-  getAll(): UserEntity[] {
-    return this.memoryUserService.getAll();
+  getAll(): Omit<UserEntity, 'password'>[] {
+    const usersArray = this.memoryUserService.getAll();
+    const result = usersArray.map((item) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...userData } = item;
+      return userData;
+    });
+    return result;
   }
 
-  getOne(id: string) {
-    return this.memoryUserService.get(id);
+  getOne(id: string): Omit<UserEntity, 'password'> {
+    const result = this.memoryUserService.get(id);
+    if (result) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...userData } = this.memoryUserService.get(id);
+      return userData;
+    } else {
+      throw new NotFoundException('User not found');
+    }
   }
 
-  create(body: CreateUserDto): UserEntity {
+  create(body: CreateUserDto): Omit<UserEntity, 'password'> {
     const newUser: UserEntity = <UserEntity>body;
     newUser.version = 1;
     newUser.createdAt = new Date().getTime();
     newUser.updatedAt = newUser.createdAt;
-    return this.memoryUserService.create(newUser, uuidv4);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, ...userData } = this.memoryUserService.create(
+      newUser,
+      uuidv4,
+    );
+    return userData;
   }
 
-  update(id: string, body: UpdatePasswordDto): UserEntity {
+  update(id: string, body: UpdatePasswordDto): Omit<UserEntity, 'password'> {
     const currentUser = this.memoryUserService.get(id);
     if (currentUser) {
       if (body.oldPassword !== currentUser.password) {
@@ -41,7 +59,9 @@ export class UserService {
         updatedAt: new Date().getTime(),
       };
       this.memoryUserService.update(newUser);
-      return newUser;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { password, ...userData } = newUser;
+      return userData;
     }
     throw new NotFoundException('User not found');
   }

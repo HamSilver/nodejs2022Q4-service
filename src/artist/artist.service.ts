@@ -50,9 +50,13 @@ export class ArtistService implements OnModuleInit {
   delete(id: string): void {
     if (this.memoryArtistService.get(id)) {
       const foundAlbums = this.albumService.getByArtist(id);
-      foundAlbums.forEach((albumId) => this.albumService.delete(albumId.id));
+      foundAlbums.forEach((albumId) =>
+        this.albumService.update(albumId.id, { artistId: null }),
+      );
       const foundTracks = this.trackService.getByArtist(id);
-      foundTracks.forEach((trackId) => this.trackService.delete(trackId.id));
+      foundTracks.forEach((trackId) =>
+        this.trackService.update(trackId.id, { artistId: null }),
+      );
       this.memoryArtistService.delete(id);
     } else {
       throw new NotFoundException('Artist not found');
