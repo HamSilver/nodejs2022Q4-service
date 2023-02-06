@@ -10,6 +10,7 @@ import {
   Param,
   Post,
   Put,
+  UseInterceptors,
 } from '@nestjs/common';
 import { Req } from '@nestjs/common';
 import { NotFoundException } from '@nestjs/common/exceptions';
@@ -17,7 +18,9 @@ import { ParseUUIDPipe } from '@nestjs/common';
 import { CreateUserDto, UpdatePasswordDto } from './user.dto';
 import { UserService } from './user.service';
 import { checkUrlForSlash } from 'src/utils/checkUrl';
+import { PswInterceptor } from './interceptors/psw.interceptor';
 
+@UseInterceptors(PswInterceptor)
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}

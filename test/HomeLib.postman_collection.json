@@ -106,7 +106,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"oldPassword\": \"{{USER_PSW}}\",\r\n  \"newPassword\": \"{{$randomPassword}}\"\r\n}",
+							"raw": "{\r\n  \"oldPassword\": \"7Bea12ZoOUJIQXp\",\r\n  \"newPassword\": \"{{$randomPassword}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
