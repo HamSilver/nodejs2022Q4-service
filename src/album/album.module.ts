@@ -4,10 +4,7 @@ import { AlbumController } from './album.controller';
 import { AlbumService } from './album.service';
 
 @Module({
-  imports: [
-    InMemoryDBModule.forFeature('album'),
-    InMemoryDBModule.forFeature('artist'),
-  ],
+  imports: [InMemoryDBModule.forFeature('album')],
   controllers: [AlbumController],
   providers: [AlbumService],
 })

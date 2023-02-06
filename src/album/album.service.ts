@@ -5,10 +5,12 @@ import { ModuleRef } from '@nestjs/core';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateAlbumDto, UpdateAlbumDto } from './album.dto';
 import { ArtistService } from '../artist/artist.service';
+import { TrackService } from '../track/track.service';
 
 @Injectable()
 export class AlbumService implements OnModuleInit {
   private artistService: ArtistService;
+  private trackService: TrackService;
 
   constructor(
     private memoryAlbumService: InMemoryDBService<AlbumEntity>,
@@ -17,6 +19,7 @@ export class AlbumService implements OnModuleInit {
 
   onModuleInit() {
     this.artistService = this.moduleRef.get(ArtistService, { strict: false });
+    this.trackService = this.moduleRef.get(TrackService, { strict: false });
   }
 
   getAll(): AlbumEntity[] {
@@ -54,6 +57,8 @@ export class AlbumService implements OnModuleInit {
 
   delete(id: string): void {
     if (this.memoryAlbumService.get(id)) {
+      const foundTracks = this.trackService.getByAlbum(id);
+      foundTracks.forEach((trackId) => this.trackService.delete(trackId.id));
       this.memoryAlbumService.delete(id);
     } else {
       throw new NotFoundException('Album not found');
