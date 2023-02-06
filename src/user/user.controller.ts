@@ -16,6 +16,7 @@ import { NotFoundException } from '@nestjs/common/exceptions';
 import { ParseUUIDPipe } from '@nestjs/common';
 import { CreateUserDto, UpdatePasswordDto } from './user.dto';
 import { UserService } from './user.service';
+import { checkUrlForSlash } from 'src/utils/checkUrl';
 
 @Controller('user')
 export class UserController {
@@ -23,15 +24,16 @@ export class UserController {
 
   @Get('/')
   public async getAll(@Req() req: any) {
-    const url: string = req?.url ?? '';
-    if (url.endsWith('/')) {
-      throw new NotFoundException();
-    }
+    checkUrlForSlash(req);
     return this.userService.getAll();
   }
 
   @Get('/:id')
-  public async getOne(@Param('id', new ParseUUIDPipe()) id: string) {
+  public async getOne(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Req() req: any,
+  ) {
+    checkUrlForSlash(req);
     const result = this.userService.getOne(id);
     if (result) {
       return this.userService.getOne(id);
@@ -43,10 +45,12 @@ export class UserController {
   public async create(
     @Body() body: CreateUserDto,
     @Headers('Content-Type') header: string,
+    @Req() req: any,
   ) {
     if (header !== 'application/json') {
       throw new ForbiddenException('Wrong Content-Type');
     }
+    checkUrlForSlash(req);
     return this.userService.create(body);
   }
 
@@ -55,7 +59,9 @@ export class UserController {
     @Param('id', new ParseUUIDPipe()) id: string,
     @Body() body: UpdatePasswordDto,
     @Headers('Content-Type') header: string,
+    @Req() req: any,
   ) {
+    checkUrlForSlash(req);
     if (header !== 'application/json') {
       throw new ForbiddenException('Wrong Content-Type');
     }
@@ -64,7 +70,11 @@ export class UserController {
 
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public async delete(@Param('id', new ParseUUIDPipe()) id: string) {
+  public async delete(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Req() req: any,
+  ) {
+    checkUrlForSlash(req);
     return this.userService.delete(id);
   }
 }

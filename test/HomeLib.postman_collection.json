@@ -55,15 +55,14 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:4000/user/",
+							"raw": "http://localhost:4000/user",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "4000",
 							"path": [
-								"user",
-								""
+								"user"
 							]
 						}
 					},
