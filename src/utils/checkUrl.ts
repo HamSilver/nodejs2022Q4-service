@@ -5,4 +5,4 @@ export const checkUrlForSlash = (req: Request): void => {
   if (url.endsWith('/')) {
     throw new NotFoundException();
   }
-}
+};

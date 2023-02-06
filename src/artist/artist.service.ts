@@ -1,16 +1,23 @@
-import {
-  ForbiddenException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { InMemoryDBService } from '@nestjs-addons/in-memory-db';
 import { ArtistEntity } from './entities/artist.entity';
 import { v4 as uuidv4 } from 'uuid';
+import { ModuleRef } from '@nestjs/core';
 import { CreateArtistDto, UpdateArtistDto } from './artist.dto';
+import { AlbumService } from '../album/album.service';
 
 @Injectable()
-export class ArtistService {
-  constructor(private memoryArtistService: InMemoryDBService<ArtistEntity>) {}
+export class ArtistService implements OnModuleInit {
+  private albumService: AlbumService;
+
+  constructor(
+    private memoryArtistService: InMemoryDBService<ArtistEntity>,
+    private moduleRef: ModuleRef,
+  ) {}
+
+  onModuleInit() {
+    this.albumService = this.moduleRef.get(AlbumService, { strict: false });
+  }
 
   getAll(): ArtistEntity[] {
     return this.memoryArtistService.getAll();
@@ -39,6 +46,8 @@ export class ArtistService {
 
   delete(id: string): void {
     if (this.memoryArtistService.get(id)) {
+      const foundAlbums = this.albumService.getByArtist(id);
+      foundAlbums.forEach((albumId) => this.albumService.delete(albumId.id));
       this.memoryArtistService.delete(id);
     } else {
       throw new NotFoundException('Artist not found');
