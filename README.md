@@ -19,6 +19,10 @@ npm install
 
 ## Running application
 
+Rename `.env.example` file in root directory of the project to `.env`
+
+Run app:
+
 ```
 npm start
 ```
@@ -54,6 +58,8 @@ To run only specific test suite with authorization
 ```
 npm run test:auth -- <path to suite>
 ```
+
+Also `test` folder contains `HomeLib.postman_collection.json` for **Postman**
 
 ### Auto-fix and format
 
