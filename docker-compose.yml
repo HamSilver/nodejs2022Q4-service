@@ -15,7 +15,7 @@ services:
       - PORT=${PORT}
     volumes:
       - ./src:/usr/app/src
-    command: ['npm', 'run', 'start']
+    command: ['npm', 'run', 'start:dev']
 
   pg:
     image: hamsilver/priva:nodejs2022q4-pg
