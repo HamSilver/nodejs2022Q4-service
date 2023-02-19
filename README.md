@@ -14,10 +14,14 @@ git clone {repository URL}
 ## Installing NPM modules
 
 ```
-npm install
+npm i -f
 ```
 
 ## Running application
+
+Rename `.env.example` file in root directory of the project to `.env`
+
+Run app:
 
 ```
 npm start
@@ -26,6 +30,20 @@ npm start
 After starting the app on port (4000 as default) you can open
 in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
 For more information about OpenAPI/Swagger please visit https://swagger.io/.
+
+## Running application in docker container
+
+Rename `.env.example` file in root directory of the project to `.env`, then run:
+
+```
+npm run docker
+```
+
+Scanning for vulnerabilities (answer **Y** for Snyk, if asks):
+
+```
+npm run docker:scan
+```
 
 ## Testing
 
@@ -54,6 +72,8 @@ To run only specific test suite with authorization
 ```
 npm run test:auth -- <path to suite>
 ```
+
+Also `test` folder contains `HomeLib.postman_collection.json` for **Postman**
 
 ### Auto-fix and format
 

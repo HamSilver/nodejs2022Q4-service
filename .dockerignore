@@ -1,0 +1,6 @@
+.gitignore
+.env
+.misc
+dist
+pg
+node_modules
