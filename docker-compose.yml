@@ -1,0 +1,40 @@
+services:
+  service:
+    image: hamsilver/priva:nodejs2022q4-service
+    build: .
+    env_file:
+      - .env
+    restart: always
+    networks:
+      - skynet
+    ports:
+      - ${PORT}:${PORT}
+    depends_on:
+      - pg
+    environment:
+      - PORT=${PORT}
+    volumes:
+      - ./src:/usr/app/src
+    command: ['npm', 'run', 'start']
+
+  pg:
+    image: hamsilver/priva:nodejs2022q4-pg
+    build: ./pg
+    networks:
+      - skynet
+    restart: always
+    ports:
+      - '${POSTGRES_PORT}:${POSTGRES_PORT}'
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+networks:
+  skynet:
+    driver: bridge
+
+volumes:
+  pg-data:
